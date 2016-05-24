@@ -1,6 +1,6 @@
 import unittest
 
-from commons.config.configuration import IniConfig, JsonConfig
+from commonspy.configuration import IniConfig, JsonConfig
 
 
 class IniConfigTest(unittest.TestCase):

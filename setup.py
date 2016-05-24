@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='commonspy',
     version='1.0-DEV',
-    packages=['test', 'commons'],
+    packages=['commonspy'],
     url='',
     license='GNU GPL v3',
     author='Patrick Wilmes',

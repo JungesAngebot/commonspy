@@ -9,7 +9,7 @@ This module provides classes for accessing different configuration formats / fil
 
 class IniConfig:
     """
-    This utils class helps you to get properties out of an ini file.
+    This commonspy class helps you to get properties out of an ini file.
     Validation if part of this config class.
     """
     def __init__(self, configfile):
