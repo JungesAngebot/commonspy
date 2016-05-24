@@ -2,6 +2,10 @@ import configparser
 import json
 import os
 
+"""
+This module provides classes for accessing different configuration formats / files.
+"""
+
 
 class IniConfig:
     """
