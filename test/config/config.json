@@ -1,0 +1,8 @@
+{
+  "simple": "value",
+  "chain": {
+    "some": {
+      "key": "value"
+    }
+  }
+}

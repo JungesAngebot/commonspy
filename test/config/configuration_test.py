@@ -1,9 +1,9 @@
 import unittest
 
-from commons.config.configuration import IniConfig
+from commons.config.configuration import IniConfig, JsonConfig
 
 
-class ConfigUtilsTest(unittest.TestCase):
+class IniConfigTest(unittest.TestCase):
     def test_get_property_no_such_section(self):
         config = IniConfig('test.ini')
         with self.assertRaises(Exception):
@@ -23,3 +23,31 @@ class ConfigUtilsTest(unittest.TestCase):
         result = config.get_property('TestSection', 'testproperty')
 
         self.assertEquals(result, 'test')
+
+
+class JsonConfigTest(unittest.TestCase):
+    def test_config_file_does_not_exist(self):
+        with self.assertRaises(Exception):
+            JsonConfig('doesnotexist.json')
+
+    def test_config_single_key_does_not_exist(self):
+        config = JsonConfig('config.json')
+        with self.assertRaises(Exception):
+            config.get_property('none')
+
+    def test_config_single_key_exists(self):
+        config = JsonConfig('config.json')
+        result = config.get_property('simple')
+
+        self.assertEqual(result, 'value')
+
+    def test_config_keychain_with_non_existing_key(self):
+        config = JsonConfig('config.json')
+        with self.assertRaises(Exception):
+            config.get_property('chain.property.key')
+
+    def test_config_keychain_with_existing_keys(self):
+        config = JsonConfig('config.json')
+        result = config.get_property('chain.some.key')
+
+        self.assertEquals(result, 'value')
