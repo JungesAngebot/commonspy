@@ -2,7 +2,7 @@ import configparser
 import os
 
 
-class ConfigUtils:
+class Config:
     def __init__(self, configfile):
         if not os.path.isfile(configfile):
             raise Exception('The file {} does not exist!'.format(configfile))
