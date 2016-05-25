@@ -44,6 +44,15 @@ class BaseMongoConcern:
         self.document = None
         self.documents = None
 
+    def create_write_concern_to_server(self, client):
+        """
+        Sets the client class for later connecting to the mongo db server and finally returns itself.
+        :param client: mongo db client for establishing a db connection
+        :return: self
+        """
+        self.client = client
+        return self
+
     def and_use_database(self, database_name):
         """
         Name of the database the client should use as string.
@@ -77,15 +86,6 @@ class MongoWriteConcern(Concern, BaseMongoConcern):
 
     def __init__(self):
         super().__init__()
-
-    def create_write_concern_to_server(self, client):
-        """
-        Sets the client class for later connecting to the mongo db server and finally returns itself.
-        :param client: mongo db client for establishing a db connection
-        :return: self
-        """
-        self.client = client
-        return self
 
     def with_document(self, json_document):
         """
