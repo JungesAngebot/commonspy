@@ -44,7 +44,7 @@ class BaseMongoConcern:
         self.document = None
         self.documents = None
 
-    def create_write_concern_to_server(self, client):
+    def create_concern_to_server(self, client):
         """
         Sets the client class for later connecting to the mongo db server and finally returns itself.
         :param client: mongo db client for establishing a db connection
