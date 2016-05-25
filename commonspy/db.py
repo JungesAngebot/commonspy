@@ -27,14 +27,8 @@ class Concern:
         pass
 
 
-class MongoWriteConcern(Concern):
-    """
-    This write concerns writes a document to a mongo db server. You can eather write a
-    single document to the server or multiple (batch import).
-
-    Useage: MongoWriteConcern().create_write_concern_to_server(MongoClient('localhost', 27017)).and_use_database(
-    'mytestdb').and_use_collection('coll').with_document({'test': 'test'}).execute()
-    """
+class BaseMongoConcern:
+    __metaclass__ = ABCMeta
 
     def __init__(self):
         """
@@ -49,15 +43,6 @@ class MongoWriteConcern(Concern):
         self.collection = None
         self.document = None
         self.documents = None
-
-    def create_write_concern_to_server(self, client):
-        """
-        Sets the client class for later connecting to the mongo db server and finally returns itself.
-        :param client: mongo db client for establishing a db connection
-        :return: self
-        """
-        self.client = client
-        return self
 
     def and_use_database(self, database_name):
         """
@@ -75,6 +60,31 @@ class MongoWriteConcern(Concern):
         :return: self
         """
         self.collection = collection_name
+        return self
+
+    def _collection(self):
+        return self.client[self.database][self.collection]
+
+
+class MongoWriteConcern(Concern, BaseMongoConcern):
+    """
+    This write concerns writes a document to a mongo db server. You can eather write a
+    single document to the server or multiple (batch import).
+
+    Useage: MongoWriteConcern().create_write_concern_to_server(MongoClient('localhost', 27017)).and_use_database(
+    'mytestdb').and_use_collection('coll').with_document({'test': 'test'}).execute()
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def create_write_concern_to_server(self, client):
+        """
+        Sets the client class for later connecting to the mongo db server and finally returns itself.
+        :param client: mongo db client for establishing a db connection
+        :return: self
+        """
+        self.client = client
         return self
 
     def with_document(self, json_document):
@@ -101,6 +111,43 @@ class MongoWriteConcern(Concern):
         documents.
         :return: id of the inserted record
         """
-        return self.client[self.database][self.collection].insert_one(
-            self.document).inserted_id if self.document is not None else self.client[self.database][
-            self.collection].insert(self.documents).inserted_id
+        return self._collection().insert_one(
+            self.document).inserted_id if self.document is not None else self._collection().insert(
+            self.documents).inserted_id
+
+
+class MongoReadConcern(Concern, BaseMongoConcern):
+    """
+    Concern for reading documents from the mongo db server. The concern supports
+    both single and multi document search queries.
+    """
+    def __init__(self):
+        """
+        The concern needs to know the query and if it should search for a single document (find_one(...))
+        or multiple documents(find(...)). On default the concern will search for multiple documents and
+        will return a mongo cursor instance for iterating through the results.
+        """
+        super().__init__()
+        self.document_query = None
+        self.single_doc = False
+
+    def find_only_one_document(self):
+        """
+        Make the concern only search for a single document.
+        :return: self
+        """
+        self.single_doc = True
+        return self
+
+    def use_query(self, query):
+        """
+        Specifies the search query as dict.
+        :param query: query dict
+        :return: self
+        """
+        self.document_query = query
+        return self
+
+    def execute(self):
+        return self._collection().find(self.document_query) if not self.single_doc else self._collection().find_one(
+            self.document_query)
