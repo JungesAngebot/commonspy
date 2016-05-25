@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-
 """
 Module for database connections. This module contains helper classes and mechanims for easy db access.
 """
@@ -36,6 +35,7 @@ class MongoWriteConcern(Concern):
     Useage: MongoWriteConcern().create_write_concern_to_server(MongoClient('localhost', 27017)).and_use_database(
     'mytestdb').and_use_collection('coll').with_document({'test': 'test'}).execute()
     """
+
     def __init__(self):
         """
         The constructor sets the basic members of the concern that are required to actual persist data.
@@ -48,6 +48,7 @@ class MongoWriteConcern(Concern):
         self.database = None
         self.collection = None
         self.document = None
+        self.documents = None
 
     def create_write_concern_to_server(self, client):
         """
@@ -85,4 +86,21 @@ class MongoWriteConcern(Concern):
         self.document = json_document
         return self
 
-    def execute(self): return self.client[self.database][self.collection].insert_one(self.document).inserted_id
+    def with_documents(self, json_documents):
+        """
+        Setter method for inserting multiple documents.
+        :param json_documents: multiple json documents (list of dict)
+        :return: self
+        """
+        self.documents = json_documents
+        return self
+
+    def execute(self):
+        """
+        Finally executes the concern. The method checks weather it should insert a single document or multiple
+        documents.
+        :return: id of the inserted record
+        """
+        return self.client[self.database][self.collection].insert_one(
+            self.document).inserted_id if self.document is not None else self.client[self.database][
+            self.collection].insert(self.documents).inserted_id
