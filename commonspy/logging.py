@@ -26,12 +26,13 @@ class Message:
         '40': 'Error'
     }
 
-    def __init__(self, message):
+    def __init__(self, message, request_id=None):
         self.timestamp = str(datetime.datetime.now())
         self.message = message
         self.level = self._logging_level()
         self.hostname = socket.getfqdn()
         self.thread_name = current_thread().getName()
+        self.request_id = request_id
 
     def _logging_level(self):
         return Message.level[str(logger.level)]
