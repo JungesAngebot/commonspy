@@ -121,6 +121,7 @@ class MongoReadConcern(Concern, BaseMongoConcern):
     Concern for reading documents from the mongo db server. The concern supports
     both single and multi document search queries.
     """
+
     def __init__(self):
         """
         The concern needs to know the query and if it should search for a single document (find_one(...))
@@ -151,3 +152,69 @@ class MongoReadConcern(Concern, BaseMongoConcern):
     def execute(self):
         return self._collection().find(self.document_query) if not self.single_doc else self._collection().find_one(
             self.document_query)
+
+
+class BasePostgresConcern:
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        """
+        The constructor sets the basic members of the concern that are required to actual persist data.
+        The client is a postgres db client instance used to connect to the db server.
+        Query is the string, used to request data. All SQL-Entries in query_list will be called for persistence
+        """
+        self.client = None
+
+        self.query = None
+        self.query_list = []
+
+    def create_concern_to_server(self, client):
+        """
+        Sets the client class for later connecting to the postgres db server and finally returns itself.
+        :param client: postgres db client for establishing the db connection
+        :return: self
+        """
+        self.client = client
+
+        return self
+
+
+class PostgresReadConcern(Concern, BasePostgresConcern):
+    def __init__(self):
+        super().__init__()
+
+    def use_query(self, query):
+        """
+        Specifies the search query.
+        :param query: query as string
+        :return: self
+        """
+        self.query = query
+        return self
+
+    def execute(self):
+        db_cur = self.client.cursor()
+        db_cur.execute(self.query)
+
+        return db_cur.fetchall()
+
+
+class PostgresWriteConcern(Concern, BasePostgresConcern):
+    def __init__(self):
+        super().__init__()
+
+    def add_query(self, query):
+        """
+        Adds the query as String for later execution
+        :param query: query String
+        :return: self
+        """
+        self.query_list.append(query)
+        return self
+
+    def execute(self):
+        db_cur = self.client.cursor()
+        for query in self.query_list:
+            db_cur.execute(query)
+
+        self.client.commit()
