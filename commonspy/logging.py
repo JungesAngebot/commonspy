@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logging.basicConfig(level=logging.DEBUG)
 
 
-log_handler = logging.StreamHandler(open('api.log.json', 'w', encoding='utf-8'))
+log_handler = logging.StreamHandler(open('api.log.json', 'w+', encoding='utf-8'))
 formatter = jsonlogger.JsonFormatter()
 log_handler.setFormatter(formatter)
 log_handler.setLevel(logging.DEBUG)
