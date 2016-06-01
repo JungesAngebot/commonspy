@@ -35,8 +35,10 @@ class RequestHandler(MethodView):
         from commonspy.logging import logger
         from commonspy.logging import Message
         logger.info(Message('Executing get request ...').__dict__)
+        self._sortable()
 
-    def _sortable(self, request):
+    def _sortable(self):
+        from flask import request
         self.sort_key = request.args.get('sort_key') if 'sort_key' in request.args else 'id'
         self.sort_order = request.args.get('sort_order') if 'sort_order' in request.args else 'desc'
 
