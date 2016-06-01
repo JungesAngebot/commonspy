@@ -41,18 +41,14 @@ class RequestHandler(MethodView):
         if 'sort_order' in request.args:
             self.sort_order = request.args.get('sort_order')
 
-    @abstractmethod
     def get(self, *args):
         self._prepare_request()
 
-    @abstractmethod
     def post(self, *args):
         self._prepare_request()
 
-    @abstractmethod
     def put(self, *args):
         self._prepare_request()
 
-    @abstractmethod
     def delete(self, *args):
         self._prepare_request()
