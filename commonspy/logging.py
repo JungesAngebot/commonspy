@@ -2,6 +2,8 @@ import datetime
 import json
 import logging
 import socket
+import uuid
+from abc import ABCMeta, abstractmethod
 from threading import current_thread
 
 from pythonjsonlogger import jsonlogger
@@ -15,6 +17,17 @@ formatter = jsonlogger.JsonFormatter()
 log_handler.setFormatter(formatter)
 log_handler.setLevel(logging.DEBUG)
 logger.addHandler(log_handler)
+
+__REQUEST_ID__ = None
+
+
+class RequestHandler:
+
+    __metaclass__ = ABCMeta
+
+    def _prepare_request(self):
+        global __REQUEST_ID__
+        __REQUEST_ID__ = str(uuid.uuid4())
 
 
 class Message:
