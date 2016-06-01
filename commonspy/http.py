@@ -2,6 +2,7 @@ import urllib.request
 import uuid
 from abc import ABCMeta, abstractmethod
 
+from commonspy.logging import logger, Message
 from flask.views import MethodView
 
 """
@@ -32,6 +33,7 @@ class RequestHandler(MethodView):
         """
         global __REQUEST_ID__
         __REQUEST_ID__ = str(uuid.uuid4())
+        logger.info(Message('Executing get request ...').__dict__)
 
     def _sortable(self, request):
         if 'sort_key' in request.args:
