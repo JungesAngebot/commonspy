@@ -37,10 +37,8 @@ class RequestHandler(MethodView):
         logger.info(Message('Executing get request ...').__dict__)
 
     def _sortable(self, request):
-        if 'sort_key' in request.args:
-            self.sort_key = request.args.get('sort_key')
-        if 'sort_order' in request.args:
-            self.sort_order = request.args.get('sort_order')
+        self.sort_key = request.args.get('sort_key') if 'sort_key' in request.args else 'id'
+        self.sort_order = request.args.get('sort_order') if 'sort_order' in request.args else 'desc'
 
     def get(self, *args):
         self._prepare_request()
