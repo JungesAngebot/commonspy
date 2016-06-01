@@ -3,7 +3,7 @@ import json
 import logging
 import socket
 import uuid
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from threading import current_thread
 
 from pythonjsonlogger import jsonlogger
@@ -39,13 +39,13 @@ class Message:
         '40': 'Error'
     }
 
-    def __init__(self, message, *args, **kwargs):
+    def __init__(self, message):
         self.timestamp = str(datetime.datetime.now())
         self.message = message
         self.level = self._logging_level()
         self.hostname = socket.getfqdn()
         self.thread_name = current_thread().getName()
-        self.request_id = kwargs.pop('request_id', None)
+        self.request_id = __REQUEST_ID__
 
     def _logging_level(self):
         return Message.level[str(logger.level)]
