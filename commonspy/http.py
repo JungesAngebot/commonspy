@@ -21,7 +21,8 @@ __REQUEST_ID__ = None
 class RequestHandler(MethodView):
     """
     This is a bsic request handler that sets a uuid for the current request. This uuid is used to
-    trace the request calles in a microservice environment.
+    trace the request calles in a microservice environment. This request handler should only be used
+    in combination with the flask microframework.
     """
     __metaclass__ = ABCMeta
 
