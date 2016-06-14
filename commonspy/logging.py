@@ -9,7 +9,6 @@ from pythonjsonlogger import jsonlogger
 logger = logging.getLogger()
 logging.basicConfig(level=logging.DEBUG)
 
-
 log_handler = logging.StreamHandler(open('api.log.json', 'w+', encoding='utf-8'))
 formatter = jsonlogger.JsonFormatter()
 log_handler.setFormatter(formatter)
@@ -39,3 +38,29 @@ class Message:
 
     def __str__(self):
         return json.dumps(self.__dict__)
+
+
+def log_info(message):
+    logger.info(Message(message).__dict__)
+
+
+def log_warning(message):
+    logger.warn(Message(message).__dict__)
+
+
+def log_error(message):
+    logger.error(Message(message).__dict__)
+
+
+def log_debug(message):
+    logger.error(Message(message).__dict__)
+
+
+def change_log_location(new_location):
+    global log_handler
+    global logger
+    log_handler = logging.StreamHandler(open(new_location, 'w+', encoding='utf-8'))
+    formatter = jsonlogger.JsonFormatter()
+    log_handler.setFormatter(formatter)
+    log_handler.setLevel(logging.DEBUG)
+    logger.addHandler(log_handler)
