@@ -53,7 +53,7 @@ def log_error(message):
 
 
 def log_debug(message):
-    logger.error(Message(message).__dict__)
+    logger.debug(Message(message).__dict__)
 
 
 def change_log_location(new_location):
