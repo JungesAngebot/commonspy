@@ -91,14 +91,28 @@ class JsonConfig:
 
 
 class JsonBasedConfiguration(object):
+    """ Loads and parses json configuration files.
+    """
     def __init__(self, config_dict):
+        """ Initializer sets configuration as dict. """
         self.config_dict = config_dict
 
     def property(self, key):
+        """ Provides access to the properties of the json file. """
         pass
 
     @classmethod
     def create_from_file(cls, filename):
+        """ Creates a new instance of the configuration class.
+
+        The filename passes as an parameter will be validated befor the json will be loaded.
+        The existence of the file will be checked and if the file does not exist it will
+        raise a TypeError.
+
+        Otherwise the file will be read and converted to a dict.
+
+        :return: Instance of the JsonBasedConfiguration class.
+        """
         if not os.path.isfile(filename):
             raise TypeError('Configuration file %s not found!' % filename)
         with open(filename) as file:
