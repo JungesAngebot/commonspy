@@ -77,4 +77,8 @@ class JsonBasedConfigurationTest(unittest.TestCase):
             config.property('chain.property.key')
 
     def test_config_kechain_with_existing_key(self):
-        pass
+        config = JsonBasedConfiguration.create_from_file('config.json')
+
+        result = config.property('chain.some.key')
+
+        self.assertEquals(result, 'value')
