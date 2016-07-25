@@ -109,7 +109,7 @@ class JsonBasedConfiguration(object):
             if inner_key in json_tmp:
                 json_tmp = json_tmp[inner_key]
             else:
-                raise Exception
+                raise ConfigurationKeyNotFoundException('Key %s was not found in the configuration file.' % key)
         return json_tmp
 
     @classmethod
