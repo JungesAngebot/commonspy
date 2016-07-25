@@ -94,6 +94,9 @@ class JsonBasedConfiguration(object):
     def __init__(self, config_dict):
         self.config_dict = config_dict
 
+    def property(self, key):
+        pass
+
     @classmethod
     def create_from_file(cls, filename):
         if not os.path.isfile(filename):
