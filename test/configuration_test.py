@@ -1,6 +1,6 @@
 import unittest
 
-from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration
+from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration, ConfigurationKeyNotFoundException
 
 
 class IniConfigTest(unittest.TestCase):
@@ -59,7 +59,9 @@ class JsonBasedConfigurationTest(unittest.TestCase):
             JsonBasedConfiguration.create_from_file('none.json')
 
     def test_config_single_key_does_not_exist(self):
-        pass
+        config = JsonBasedConfiguration.create_from_file("config.json")
+        with self.assertRaises(ConfigurationKeyNotFoundException):
+            config.property('none')
 
     def test_config_single_key_exist(self):
         pass
