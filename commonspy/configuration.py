@@ -91,4 +91,9 @@ class JsonConfig:
 
 
 class JsonBasedConfiguration(object):
-    pass
+    def __init__(self, config_dict):
+        self.config_dict = config_dict
+
+    @classmethod
+    def create_from_file(cls):
+        pass
