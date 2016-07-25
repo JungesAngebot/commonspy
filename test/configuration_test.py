@@ -64,7 +64,11 @@ class JsonBasedConfigurationTest(unittest.TestCase):
             config.property('none')
 
     def test_config_single_key_exist(self):
-        pass
+        config = JsonBasedConfiguration.create_from_file('config.json')
+
+        result = config.property('simple')
+
+        self.assertEquals(result, 'value')
 
     def test_config_keychain_with_non_existing_key(self):
         pass
