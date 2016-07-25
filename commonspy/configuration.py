@@ -132,7 +132,7 @@ class JsonBasedConfiguration(object):
         return cls(content)
 
 
-class OverrideableConfiguration(JsonBasedConfiguration):
+class OverwriteableConfiguration(JsonBasedConfiguration):
     def property(self, key):
         if key in os.environ:
             return os.environ[key]
