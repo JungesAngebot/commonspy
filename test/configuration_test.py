@@ -71,7 +71,10 @@ class JsonBasedConfigurationTest(unittest.TestCase):
         self.assertEquals(result, 'value')
 
     def test_config_keychain_with_non_existing_key(self):
-        pass
+        config = JsonBasedConfiguration.create_from_file('config.json')
+
+        with self.assertRaises(ConfigurationKeyNotFoundException):
+            config.property('chain.property.key')
 
     def test_config_kechain_with_existing_key(self):
         pass
