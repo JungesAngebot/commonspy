@@ -133,7 +133,21 @@ class JsonBasedConfiguration(object):
 
 
 class OverwriteableConfiguration(JsonBasedConfiguration):
+    """ Configuration that could be overwritten by environment variables.
+
+    This configuration priorizes env variables. So it will look first in the system
+    environment for the specified key and if their is a variable, this value would be
+    returned. Otherwise the configuraiton file will be used.
+    """
+
     def property(self, key):
+        """ Returns ether the env configurated value or the one out of the config.
+        If a variable with the given key exists in the system env than the value of
+        this variable will be returned.
+
+        If the variable does not exist in the system env than the matching value out of
+        the specified configuration file will be used.
+        """
         if key in os.environ:
             return os.environ[key]
         return super().property(key)
