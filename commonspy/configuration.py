@@ -90,4 +90,5 @@ class JsonConfig:
         return json_tmp
 
 
-
+class JsonBasedConfiguration(object):
+    pass
