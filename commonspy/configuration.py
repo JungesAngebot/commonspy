@@ -2,14 +2,14 @@ import configparser
 import json
 import os
 
-import functools
-import warnings
+from commonspy.decorators import deprecated
 
 """
 This module provides classes for accessing different configuration formats / files.
 """
 
 
+@deprecated
 class IniConfig:
     """
     This commonspy class helps you to get properties out of an ini file.
@@ -45,6 +45,7 @@ class IniConfig:
         return self.parser[section][key]
 
 
+@deprecated
 class JsonConfig:
     """
     This class handles json based configuration. It parses a given json file for
@@ -89,4 +90,42 @@ class JsonConfig:
         return json_tmp
 
 
+class ConfigurationKeyNotFoundException(Exception):
+    pass
 
+
+class JsonBasedConfiguration(object):
+    """ Loads and parses json configuration files.
+    """
+    def __init__(self, config_dict):
+        """ Initializer sets configuration as dict. """
+        self.config_dict = config_dict
+
+    def property(self, key):
+        """ Provides access to the properties of the json file. """
+        keys = key.split('.')
+        json_tmp = self.config_dict.copy()
+        for inner_key in keys:
+            if inner_key in json_tmp:
+                json_tmp = json_tmp[inner_key]
+            else:
+                raise ConfigurationKeyNotFoundException('Key %s was not found in the configuration file.' % key)
+        return json_tmp
+
+    @classmethod
+    def create_from_file(cls, filename):
+        """ Creates a new instance of the configuration class.
+
+        The filename passes as an parameter will be validated befor the json will be loaded.
+        The existence of the file will be checked and if the file does not exist it will
+        raise a TypeError.
+
+        Otherwise the file will be read and converted to a dict.
+
+        :return: Instance of the JsonBasedConfiguration class.
+        """
+        if not os.path.isfile(filename):
+            raise TypeError('Configuration file %s not found!' % filename)
+        with open(filename) as file:
+            content = json.loads(file.read())
+        return cls(content)
