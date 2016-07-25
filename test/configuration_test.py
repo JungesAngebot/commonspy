@@ -51,3 +51,7 @@ class JsonConfigTest(unittest.TestCase):
         result = config.get_property('chain.some.key')
 
         self.assertEquals(result, 'value')
+
+
+class JsonBasedConfigurationTest(unittest.TestCase):
+    pass
