@@ -104,9 +104,6 @@ class JsonBasedConfiguration(object):
     def property(self, key):
         """ Provides access to the properties of the json file. """
 
-        if key in os.environ:
-            return os.environ[key]
-
         keys = key.split('.')
         json_tmp = self.config_dict.copy()
         for inner_key in keys:
@@ -133,3 +130,10 @@ class JsonBasedConfiguration(object):
         with open(filename) as file:
             content = json.loads(file.read())
         return cls(content)
+
+
+class OverrideableConfiguration(JsonBasedConfiguration):
+    def property(self, key):
+        if key in os.environ:
+            return os.environ[key]
+        return super().property(key)
