@@ -99,7 +99,14 @@ class JsonBasedConfiguration(object):
 
     def property(self, key):
         """ Provides access to the properties of the json file. """
-        pass
+        keys = key.split('.')
+        json_tmp = self.config_dict.copy()
+        for inner_key in keys:
+            if inner_key in json_tmp:
+                json_tmp = json_tmp[inner_key]
+            else:
+                raise Exception
+        return json_tmp
 
     @classmethod
     def create_from_file(cls, filename):
