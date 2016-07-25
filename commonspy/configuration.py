@@ -95,5 +95,9 @@ class JsonBasedConfiguration(object):
         self.config_dict = config_dict
 
     @classmethod
-    def create_from_file(cls):
-        pass
+    def create_from_file(cls, filename):
+        if not os.path.isfile(filename):
+            raise TypeError('Configuration file %s not found!' % filename)
+        with open(filename) as file:
+            content = json.loads(file.read())
+        return cls(content)
