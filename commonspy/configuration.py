@@ -90,6 +90,10 @@ class JsonConfig:
         return json_tmp
 
 
+class ConfigurationKeyNotFoundException(Exception):
+    pass
+
+
 class JsonBasedConfiguration(object):
     """ Loads and parses json configuration files.
     """
