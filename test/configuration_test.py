@@ -54,4 +54,17 @@ class JsonConfigTest(unittest.TestCase):
 
 
 class JsonBasedConfigurationTest(unittest.TestCase):
-    pass
+    def test_config_file_does_not_exist(self):
+        pass
+
+    def test_config_single_key_does_not_exist(self):
+        pass
+
+    def test_config_single_key_exist(self):
+        pass
+
+    def test_config_keychain_with_non_existing_key(self):
+        pass
+
+    def test_config_kechain_with_existing_key(self):
+        pass
