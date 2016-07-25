@@ -1,6 +1,6 @@
 import unittest
 
-from commonspy.configuration import IniConfig, JsonConfig
+from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration
 
 
 class IniConfigTest(unittest.TestCase):
@@ -55,7 +55,8 @@ class JsonConfigTest(unittest.TestCase):
 
 class JsonBasedConfigurationTest(unittest.TestCase):
     def test_config_file_does_not_exist(self):
-        pass
+        with self.assertRaises(TypeError):
+            JsonBasedConfiguration.create_from_file('none.json')
 
     def test_config_single_key_does_not_exist(self):
         pass
