@@ -2,14 +2,14 @@ import configparser
 import json
 import os
 
-import functools
-import warnings
+from commonspy.decorators import deprecated
 
 """
 This module provides classes for accessing different configuration formats / files.
 """
 
 
+@deprecated
 class IniConfig:
     """
     This commonspy class helps you to get properties out of an ini file.
@@ -45,6 +45,7 @@ class IniConfig:
         return self.parser[section][key]
 
 
+@deprecated
 class JsonConfig:
     """
     This class handles json based configuration. It parses a given json file for
