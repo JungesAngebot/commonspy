@@ -218,3 +218,19 @@ class PostgresWriteConcern(Concern, BasePostgresConcern):
             db_cur.execute(query)
 
         self.client.commit()
+
+
+class SimpleMongoQueryBuilder(object):
+    def __init__(self):
+        self.query = {}
+
+    def equals(self, field_name, field_value):
+        self.query = {field_name: field_value}
+        return self
+
+    def build(self):
+        return self.query
+
+    @classmethod
+    def start_new_query(cls):
+        return cls()
