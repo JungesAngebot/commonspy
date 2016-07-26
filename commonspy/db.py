@@ -218,3 +218,52 @@ class PostgresWriteConcern(Concern, BasePostgresConcern):
             db_cur.execute(query)
 
         self.client.commit()
+
+
+class SimpleMongoQueryBuilder(object):
+    def __init__(self):
+        self.query = {}
+
+    def equals(self, field_name, field_value):
+        self.query = {field_name: field_value}
+        return self
+
+    def build(self):
+        return self.query
+
+    @classmethod
+    def start_new_query(cls):
+        return cls()
+
+
+class MongoAnd(object):
+    def __init__(self):
+        self.conditions = []
+
+    def add_condition(self, condition):
+        self.conditions.append(condition)
+        return self
+
+    def build(self):
+        return {'$and': [condition.to_dict() for condition in self.conditions]}
+
+    @classmethod
+    def new_and_condition(cls):
+        return cls()
+
+
+class Condition(object):
+
+    def __init__(self, field_name, field_value, condition):
+        self.field_name = field_name
+        self.field_value = field_value
+        self.condition = condition
+
+    def to_dict(self):
+        return {
+            self.field_name: {self.condition: self.field_value}
+        }
+
+    @classmethod
+    def ne(cls, field_name, field_value):
+        return cls(field_name, field_value, '$ne')
