@@ -148,6 +148,7 @@ class OverwriteableConfiguration(JsonBasedConfiguration):
         If the variable does not exist in the system env than the matching value out of
         the specified configuration file will be used.
         """
-        if key in os.environ:
+        os_key = key.replace('.', '_')
+        if os_key in os.environ:
             return os.environ[key]
         return super().property(key)

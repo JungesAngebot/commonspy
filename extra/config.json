@@ -1,0 +1,7 @@
+{
+  "database": {
+    "mongo_host": "mongodb://localhost:27017/",
+    "database": "connector-db",
+    "collection": "users"
+  }
+}
