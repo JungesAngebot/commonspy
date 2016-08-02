@@ -150,5 +150,5 @@ class OverwriteableConfiguration(JsonBasedConfiguration):
         """
         os_key = key.replace('.', '_')
         if os_key in os.environ:
-            return os.environ[key]
+            return os.environ[os_key]
         return super().property(key)
