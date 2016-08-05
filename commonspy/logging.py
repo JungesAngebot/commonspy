@@ -64,3 +64,19 @@ def change_log_location(new_location):
     log_handler.setFormatter(formatter)
     log_handler.setLevel(logging.DEBUG)
     logger.addHandler(log_handler)
+
+
+def build_message_from_exception_chain(e: Exception):
+    """ Concats the messages of the exception chain into a single string
+
+    Uses the pipe symbol ('|') for separating the messages.
+
+    :param e: the exception to generate the message from
+    :return: the concatenated message from the exception chain
+    """
+    exception = e
+    message = str(exception)
+    while (exception.__cause__):
+        exception = exception.__cause__
+        message = message + " | " + str(exception)
+    return message
