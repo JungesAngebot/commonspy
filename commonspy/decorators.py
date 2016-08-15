@@ -1,7 +1,16 @@
 import functools
 import warnings
 
+from commonspy.logging import log_debug
 from flask import jsonify
+
+
+def traced_call(func):
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        log_debug('Call %s ... with args %s and kwargs %s.' % (func.__name__, args, kwargs))
+        return func(*args, **kwargs)
+    return wrapped
 
 
 def deprecated(func):
