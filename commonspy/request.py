@@ -32,7 +32,11 @@ def request_content(base_url, endpoint, content_id=None, page=0, size=10, auth=N
     response = requests.get(request_url, auth=auth) if auth is not None else requests.get(request_url)
     if response.status_code in error_http_codes:
         pass
-    return response.json()['_embedded'][endpoint] if content_id is None else response.json()
+
+    return dict(
+        content=response.json()['_embedded'],
+        paging=response.json()['page']
+    ) if content_id is None else response.json()
 
 
 def _build_request_url(base_url, content_id, endpoint, page, size):
