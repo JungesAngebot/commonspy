@@ -4,7 +4,7 @@ import requests
 error_http_codes = (400, 404, 500)
 
 
-def exec_http_get(base_url, endpoint, content_id=None, page=0, size=10, auth=None):
+def request_content(base_url, endpoint, content_id=None, page=0, size=10, auth=None):
     """ Executes a http get request to the mongo middleware.
 
     Based on the content id the url will be build and used for the actual http get request.
