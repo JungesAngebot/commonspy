@@ -2,12 +2,9 @@ import urllib.request
 import uuid
 from abc import ABCMeta
 
-from commonspy.decorators import deprecated
 from flask.views import MethodView
 
-"""
-Module contains some commons http helper methods.
-"""
+""" Module contains some commons http helper methods. """
 
 
 def download_file(url, desitination): urllib.request.urlretrieve(url, desitination)
@@ -19,7 +16,6 @@ def request_uuid(): return str(uuid.uuid4())
 __REQUEST_ID__ = None
 
 
-@deprecated
 class RequestHandler(MethodView):
     """
     This is a bsic request handler that sets a uuid for the current request. This uuid is used to
