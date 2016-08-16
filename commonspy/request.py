@@ -2,8 +2,12 @@
 
 
 def exec_http_get(base_url, endpoint, content_id=None, page=0, size=10):
+    request_url = _build_request_url(base_url, content_id, endpoint, page, size)
+
+
+def _build_request_url(base_url, content_id, endpoint, page, size):
     endpoint_url = '%s/%s' % (base_url, endpoint)
     if content_id is not None:
         endpoint_url = '%s/%s' % (endpoint_url, content_id)
-    endpoint_url = '%s?page=%s&size=%s' % (endpoint_url, page, size)
+    return '%s?page=%s&size=%s' % (endpoint_url, page, size)
 
