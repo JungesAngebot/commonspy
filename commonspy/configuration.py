@@ -132,7 +132,7 @@ class JsonBasedConfiguration(object):
         return cls(content)
 
 
-class OverwriteableConfiguration(JsonBasedConfiguration):
+class OverwritableConfiguration(JsonBasedConfiguration):
     """ Configuration that could be overwritten by environment variables.
 
     This configuration priorizes env variables. So it will look first in the system
