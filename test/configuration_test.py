@@ -82,3 +82,17 @@ class JsonBasedConfigurationTest(unittest.TestCase):
         result = config.property('chain.some.key')
 
         self.assertEquals(result, 'value')
+
+
+class YamlConfigurationTest(unittest.TestCase):
+    def test_top_level_property(self):
+        pass
+
+    def test_second_level_property(self):
+        pass
+
+    def test_property_does_not_exist(self):
+        pass
+
+    def test_overwrite_property_in_env(self):
+        pass
