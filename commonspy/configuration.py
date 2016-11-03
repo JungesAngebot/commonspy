@@ -161,8 +161,19 @@ class YamlConfiguration(object):
     def __init__(self, yaml_content):
         self.config = yaml.load(yaml_content)
 
-    def property(self):
-        pass
+    def property(self, key):
+        if '.' in key:
+            key_chain = key.split('.')
+            return self._nested_property(key_chain)
+        return self.config.get(key)
+
+    def _nested_property(self, key_chain):
+        config = self.config
+        for key in key_chain:
+            if isinstance(config, dict):
+                config = config.get(key)
+            else:
+                return config
 
     @classmethod
     def create_from_file(cls, file):
