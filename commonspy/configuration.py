@@ -167,6 +167,11 @@ class YamlConfiguration(object):
             return self._nested_property(key_chain)
         return self.config.get(key)
 
+    @staticmethod
+    def from_environment(key):
+        env_key = key.replace('.', '_')
+        return os.environ.get(env_key, None)
+
     def _nested_property(self, key_chain):
         config = self.config
         for key in key_chain:
