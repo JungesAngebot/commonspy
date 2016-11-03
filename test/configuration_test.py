@@ -87,29 +87,30 @@ class JsonBasedConfigurationTest(unittest.TestCase):
 
 class YamlConfigurationTest(unittest.TestCase):
     def test_top_level_property(self):
-        config = YamlConfiguration('config.yml')
+        config = YamlConfiguration.create_from_file('config.yml')
 
         result = config.property('top_level')
 
         self.assertEqual(result, 'value')
 
     def test_second_level_property(self):
-        config = YamlConfiguration('config.yml')
+        config = YamlConfiguration.create_from_file('config.yml')
 
         result = config.property('nested.property')
 
         self.assertEqual(result, 'value')
 
     def test_property_does_not_exist(self):
-        config = YamlConfiguration('config.yml')
+        config = YamlConfiguration.create_from_file('config.yml')
 
-        with self.assertRaises(Exception):
-            config.property('top_level')
+        result = config.property('not.nothing')
+
+        self.assertEquals(result, None)
 
     def test_overwrite_property_in_env(self):
         os.environ['test'] = 'value'
 
-        config = YamlConfiguration('config.yml')
+        config = YamlConfiguration.create_from_file('config.yml')
 
         result = config.property('test')
 

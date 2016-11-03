@@ -180,8 +180,7 @@ class YamlConfiguration(object):
         for key in key_chain:
             if isinstance(config, dict):
                 config = config.get(key)
-            else:
-                return config
+        return config
 
     @classmethod
     def create_from_file(cls, file):
