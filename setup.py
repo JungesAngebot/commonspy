@@ -6,7 +6,6 @@ setup(
     packages=['commonspy'],
     url='',
     license='GNU GPL v3',
-    author='Patrick Wilmes',
-    author_email='patrick.wilmes@bit-lake.com',
+    author='funk',
     description='Commons for python 3', requires=['flask', 'tornado', 'pyyaml']
 )
