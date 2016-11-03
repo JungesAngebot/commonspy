@@ -162,6 +162,9 @@ class YamlConfiguration(object):
         self.config = yaml.load(yaml_content)
 
     def property(self, key):
+        value = YamlConfiguration.from_environment(key)
+        if value is not None:
+            return value
         if '.' in key:
             key_chain = key.split('.')
             return self._nested_property(key_chain)
