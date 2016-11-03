@@ -152,3 +152,8 @@ class OverwritableConfiguration(JsonBasedConfiguration):
         if os_key in os.environ:
             return os.environ[os_key]
         return super().property(key)
+
+
+class YamlConfiguration(object):
+    """ Reads yaml based configuration files. """
+    pass
