@@ -156,4 +156,12 @@ class OverwritableConfiguration(JsonBasedConfiguration):
 
 class YamlConfiguration(object):
     """ Reads yaml based configuration files. """
-    pass
+    def __init__(self, yaml_content):
+        pass
+
+    def property(self):
+        pass
+
+    @classmethod
+    def create_from_file(cls, file):
+        pass
