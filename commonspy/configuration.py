@@ -2,6 +2,8 @@ import configparser
 import json
 import os
 
+import yaml
+
 from commonspy.decorators import deprecated
 
 """
@@ -157,7 +159,7 @@ class OverwritableConfiguration(JsonBasedConfiguration):
 class YamlConfiguration(object):
     """ Reads yaml based configuration files. """
     def __init__(self, yaml_content):
-        pass
+        self.config = yaml.load(yaml_content)
 
     def property(self):
         pass
