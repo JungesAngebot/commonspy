@@ -1,6 +1,7 @@
+import os
 import unittest
 
-from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration, ConfigurationKeyNotFoundException
+from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration, ConfigurationKeyNotFoundException, YamlConfiguration
 
 
 class IniConfigTest(unittest.TestCase):
@@ -86,13 +87,30 @@ class JsonBasedConfigurationTest(unittest.TestCase):
 
 class YamlConfigurationTest(unittest.TestCase):
     def test_top_level_property(self):
-        pass
+        config = YamlConfiguration('config.yml')
+
+        result = config.property('top_level')
+
+        self.assertEqual(result, 'value')
 
     def test_second_level_property(self):
-        pass
+        config = YamlConfiguration('config.yml')
+
+        result = config.property('nested.property')
+
+        self.assertEqual(result, 'value')
 
     def test_property_does_not_exist(self):
-        pass
+        config = YamlConfiguration('config.yml')
+
+        with self.assertRaises(Exception):
+            config.property('top_level')
 
     def test_overwrite_property_in_env(self):
-        pass
+        os.environ['test'] = 'value'
+
+        config = YamlConfiguration('config.yml')
+
+        result = config.property('test')
+
+        self.assertEquals(result, 'value')

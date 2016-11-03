@@ -185,4 +185,8 @@ class YamlConfiguration(object):
 
     @classmethod
     def create_from_file(cls, file):
-        pass
+        if not os.path.isfile(file):
+            raise Exception('Not a valid file!')
+        with open(file) as file:
+            content = file.read()
+        return cls(content)
