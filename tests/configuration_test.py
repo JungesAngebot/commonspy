@@ -2,16 +2,17 @@ import os
 import unittest
 
 from commonspy.configuration import IniConfig, JsonConfig, JsonBasedConfiguration, ConfigurationKeyNotFoundException, YamlConfiguration
+from tests import TEST_ROOT
 
 
 class IniConfigTest(unittest.TestCase):
     def test_get_property_no_such_section(self):
-        config = IniConfig('test.ini')
+        config = IniConfig('%s/test.ini' % TEST_ROOT)
         with self.assertRaises(Exception):
             config.get_property('Some', 'none')
 
     def test_get_property_key_does_not_exist(self):
-        config = IniConfig('test.ini')
+        config = IniConfig('%s/test.ini' % TEST_ROOT)
         with self.assertRaises(Exception):
             config.get_property('TestSection', 'none')
 
@@ -20,7 +21,7 @@ class IniConfigTest(unittest.TestCase):
             IniConfig('doesnotexist.ini')
 
     def test_get_property_key_section_exists(self):
-        config = IniConfig('test.ini')
+        config = IniConfig('%s/test.ini' % TEST_ROOT)
         result = config.get_property('TestSection', 'testproperty')
 
         self.assertEquals(result, 'test')
@@ -32,23 +33,23 @@ class JsonConfigTest(unittest.TestCase):
             JsonConfig('doesnotexist.json')
 
     def test_config_single_key_does_not_exist(self):
-        config = JsonConfig('config.json')
+        config = JsonConfig('%s/config.json' % TEST_ROOT)
         with self.assertRaises(Exception):
             config.get_property('none')
 
     def test_config_single_key_exists(self):
-        config = JsonConfig('config.json')
+        config = JsonConfig('%s/config.json' % TEST_ROOT)
         result = config.get_property('simple')
 
         self.assertEqual(result, 'value')
 
     def test_config_keychain_with_non_existing_key(self):
-        config = JsonConfig('config.json')
+        config = JsonConfig('%s/config.json' % TEST_ROOT)
         with self.assertRaises(Exception):
             config.get_property('chain.property.key')
 
     def test_config_keychain_with_existing_keys(self):
-        config = JsonConfig('config.json')
+        config = JsonConfig('%s/config.json' % TEST_ROOT)
         result = config.get_property('chain.some.key')
 
         self.assertEquals(result, 'value')
@@ -60,25 +61,25 @@ class JsonBasedConfigurationTest(unittest.TestCase):
             JsonBasedConfiguration.create_from_file('none.json')
 
     def test_config_single_key_does_not_exist(self):
-        config = JsonBasedConfiguration.create_from_file("config.json")
+        config = JsonBasedConfiguration.create_from_file('%s/config.json' % TEST_ROOT)
         with self.assertRaises(ConfigurationKeyNotFoundException):
             config.property('none')
 
     def test_config_single_key_exist(self):
-        config = JsonBasedConfiguration.create_from_file('config.json')
+        config = JsonBasedConfiguration.create_from_file('%s/config.json' % TEST_ROOT)
 
         result = config.property('simple')
 
         self.assertEquals(result, 'value')
 
     def test_config_keychain_with_non_existing_key(self):
-        config = JsonBasedConfiguration.create_from_file('config.json')
+        config = JsonBasedConfiguration.create_from_file('%s/config.json' % TEST_ROOT)
 
         with self.assertRaises(ConfigurationKeyNotFoundException):
             config.property('chain.property.key')
 
     def test_config_kechain_with_existing_key(self):
-        config = JsonBasedConfiguration.create_from_file('config.json')
+        config = JsonBasedConfiguration.create_from_file('%s/config.json' % TEST_ROOT)
 
         result = config.property('chain.some.key')
 
@@ -87,21 +88,21 @@ class JsonBasedConfigurationTest(unittest.TestCase):
 
 class YamlConfigurationTest(unittest.TestCase):
     def test_top_level_property(self):
-        config = YamlConfiguration.create_from_file('config.yml')
+        config = YamlConfiguration.create_from_file('%s/config.yml' % TEST_ROOT)
 
         result = config.property('top_level')
 
         self.assertEqual(result, 'value')
 
     def test_second_level_property(self):
-        config = YamlConfiguration.create_from_file('config.yml')
+        config = YamlConfiguration.create_from_file('%s/config.yml' % TEST_ROOT)
 
         result = config.property('nested.property')
 
         self.assertEqual(result, 'value')
 
     def test_property_does_not_exist(self):
-        config = YamlConfiguration.create_from_file('config.yml')
+        config = YamlConfiguration.create_from_file('%s/config.yml' % TEST_ROOT)
 
         result = config.property('not.nothing')
 
@@ -110,7 +111,7 @@ class YamlConfigurationTest(unittest.TestCase):
     def test_overwrite_property_in_env(self):
         os.environ['test'] = 'value'
 
-        config = YamlConfiguration.create_from_file('config.yml')
+        config = YamlConfiguration.create_from_file('%s/config.yml' % TEST_ROOT)
 
         result = config.property('test')
 
